@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <title>Cadastro</title>
+  
+</head>
+<body>
+    <nav>
+        <ul class="nav nav-tabs justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link disabled" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="cadastro">Cadastro</a>
+          </li>
+        </ul>
+      </nav>
+      
+    <div id="main">
+        <form>
+            <div class="form-group">
+            <label for="exampleInputEmail1">Nome</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nome do time" required>
+            </div>
+            <div class="form-group">
+            <label for="exampleInputPassword1">Sigla</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Senha" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Serie</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Seu email" required>
+            </div>
+            <form>
+                <div class="form-group">
+                  <label for="exampleFormControlFile1">Escudo</label>
+                  <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+                </div>
+              </form>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <title>Index</title>
+
+</head>
+<body>
+    <nav>
+        <ul class="nav nav-tabs justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="cadastro">Cadastro</a>
+          </li>
+        </ul>
+      </nav>
+      
+    <button type="button" class="btn btn-primary btn-lg"><img src="{% static 'img/serieA.png' %}" alt=""></button>
+    <button type="button" class="btn btn-secondary btn-lg"><img src="{% static 'img/serieB.png' %}" alt=""></button>
+</body>
+</html>

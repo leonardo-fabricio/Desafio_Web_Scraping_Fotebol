@@ -1,0 +1,16 @@
+.btn-lg{
+    margin-top: 5%;
+    float: inline-start !important;
+    margin-left: 20%;
+}
+.btn-sm{
+    margin-left: 47% !important;
+    margin-top: 6%;
+}
+input{
+    width: 30% !important;
+}
+#main{
+    margin-left: 38%;
+    margin-top: 10%;
+}
