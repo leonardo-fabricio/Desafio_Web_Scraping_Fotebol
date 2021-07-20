@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   {% load static %}
+  {% load bootstrap4 %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,20 +12,27 @@
   
 </head>
 <body>
-    <nav>
-      <ul class="nav nav-tabs justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link disabled" href="/">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="cadastro">Cadastro</a>
-        </li>
-      </ul>
-    </nav>
+  <nav>
+    <ul class="nav nav-tabs justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="cadastro">Cadastro</a>
+      </li>
+    </ul>
+  </nav>
       
     <div id="main">
-        <form>
-            <div class="form-group">
+      <h3>Cadastro de Time</h3>
+        {% bootstrap_messages %}
+        <form action="{% url 'cadastro' %} " method="post" autocomplete="off">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+              <button type="submit" class="btn btn-dark">Cadastrar</button>
+            {% endbuttons %}
+            <!-- <div class="form-group">
             <label for="exampleInputEmail1">Nome</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nome do time" required>
             </div>
@@ -42,8 +50,9 @@
                   <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
                 </div>
               </form>
-            <button type="submit" class="btn btn-dark">Enviar</button>
+            <button type="submit" class="btn btn-dark ">Enviar</button> -->
         </form>
     </div>
+    {% bootstrap_javascript jquery='full' %}
 </body>
 </html>

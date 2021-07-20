@@ -4,6 +4,6 @@ from django.contrib import admin
 from .models import Time
 
 class TimeAdmin(admin.ModelAdmin):
-    list_display = ('nome','sigla','serie','escudo')
+    list_display = ('nome','sigla','serie','slug')
 
 admin.site.register(Time,TimeAdmin)

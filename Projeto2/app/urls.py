@@ -5,5 +5,5 @@ from django.urls import path
 
 urlpatterns = [
     path('',index),
-    path('cadastro',cadastro),
+    path('cadastro',cadastro, name='cadastro'),
 ]

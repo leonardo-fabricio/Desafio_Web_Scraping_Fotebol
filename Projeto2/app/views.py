@@ -1,5 +1,8 @@
+from django import forms
 from django.shortcuts import render
 from .models import Time
+from .forms import TimeForm, TimesModel
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -14,7 +17,19 @@ def index(request):
     return render(request,'index.html', context)
 
 def cadastro(request):
-    return render(request,'cadastro.html')
+    form = TimesModel(request.POST or None)
+    if str(request.method) == 'POST' :
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cadastro feito')
+            form = TimeForm()
+    else:
+        messages.error(request,'Erro ao cadastrar')
+
+    context = {
+        'form' : form
+    }
+    return render(request,'cadastro.html', context)
 
 # def product_new(request):
 #     if request.method == 'POST':
