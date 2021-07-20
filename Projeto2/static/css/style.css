@@ -14,3 +14,17 @@ input{
     margin-left: 38%;
     margin-top: 10%;
 }
+button{
+    justify-content: center !important;
+    margin-left: 41%;
+    margin-bottom: 10px;
+}
+table{
+    width: 50% !important;
+    justify-content: center !important;
+    margin-left: 27%;
+}
+nav{
+    color: white;
+    background-color: rgb(15, 14, 14);
+}
