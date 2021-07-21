@@ -28,14 +28,13 @@
     <br>
     <br>
     <br>
-    <button type="button" class="btn btn-dark"><img src="{% static 'img/serieA.png' %}" alt=""></button>
-    <table class="table table-dark table-striped">
+    <img src="{% static 'img/serieA.png' %}" alt="">
+    <table class="table table-striped">
       <Thead>
         <tr>
           <th>Nome</th>
           <th>Sigla</th>
           <th>Serie</th>
-          
         </tr>
       </Thead>
       <tbody>
@@ -45,15 +44,18 @@
             <td>{{time.nome }}</td>
             <td>{{time.sigla }}</td>
             <td>{{time.serie }}</td>
-            
+              
+            <td><a  href="{% url 'confirme' time.id %}" class="btn btn-danger">Deletar</a></td>
+              
           </tr>
+
           {% endfor%}
         
       </tbody>
     </table>
 
-    <button type="button" class="btn btn-dark"><img src="{% static 'img/serieB.png' %}" alt=""></button>
-    <table class="table table-dark table-striped">
+    <img src="{% static 'img/serieB.png' %}" alt="">
+    <table class="table table-striped">
       <Thead>
         <tr>
           <th>Nome</th>
@@ -69,6 +71,7 @@
               <td>{{time.nome }}</td>
               <td>{{time.sigla }}</td>
               <td>{{time.serie }}</td>
+              <td><a  href="{% url 'confirme' time.id %}" class="btn btn-danger">Deletar</a></td>
             </tr>
           {% endfor%}
         

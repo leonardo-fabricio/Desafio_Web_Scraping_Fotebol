@@ -3,9 +3,9 @@ from django.db.models import fields
 from .models import Time
 
 class TimeForm(forms.Form):
-    nome = forms.CharField(label='nome')
-    sigla = forms.CharField(label='sigla')
-    serie = forms.CharField(label='serie')
+    nome = forms.CharField(label='Nome')
+    sigla = forms.CharField(label='Sigla')
+    serie = forms.CharField(label='Serie')
 
     def send(self):
         nome = self.cleaned_data['nome']

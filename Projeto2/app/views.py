@@ -1,12 +1,13 @@
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Time
 from .forms import TimeForm, TimesModel
 from django.contrib import messages
+import sqlite3
+from sqlite3 import Error
 
 # Create your views here.
 def index(request):
-    aux = None
     serieA = Time.objects.filter(serie='A')
     serieB = Time.objects.filter(serie='B')
 
@@ -16,6 +17,38 @@ def index(request):
     }
     return render(request,'index.html', context)
 
+def confirm_delete(request,id):
+    # def conexao():
+    #     caminho = r"C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\db.sqlite3"
+    #     con = None
+    #     try:
+    #         con = sqlite3.connect(caminho)
+    #     except Error as ex:
+    #         print(ex)
+    #     return con
+    # vcon = conexao()
+    
+
+    # def deletar(id):
+    #     conexao = vcon
+    #     sql = "delete from app_time where nome = '"+ str(rem)+ "'"
+    #     try:
+    #         c = conexao.cursor()
+    #         c.execute(sql)
+    #         conexao.commit()
+    #     except Error as ex:
+    #         print(ex)
+
+    timeDelete = get_object_or_404(Time, pk=id)
+    if str(request.method) == 'POST':
+        timeDelete.delete()
+        return redirect('/')
+        
+    #deletar("Flamengo")
+    
+    return render(request,'confirm_delete.html')
+    
+
 def cadastro(request):
     form = TimesModel(request.POST or None)
     if str(request.method) == 'POST' :
@@ -23,38 +56,9 @@ def cadastro(request):
             form.save()
             messages.success(request, 'Cadastro feito')
             form = TimeForm()
-    else:
-        messages.error(request,'Erro ao cadastrar')
+  
 
     context = {
         'form' : form
     }
     return render(request,'cadastro.html', context)
-
-# def product_new(request):
-#     if request.method == 'POST':
-#         form = ProductForm(request.POST)
-#         if form.is_valid():
-#             product = Product()
-#             product.user = request.user
-#             product.name = form.cleaned_data['name']
-#             product.quantity = form.cleaned_data['quantity']
-#             product.price = form.cleaned_data['price']
-#             product.short_description = form.cleaned_data['short_description']
-#             product.description = form.cleaned_data['description']
-#             product.status = 'Active'
-#             product.save()
-
-#             categories = Category.objects.filter(id__in=request.POST.getlist('categories'))
-#             if categories:
-#                 for category in categories:
-#                     product.categories.add(category)
-#             return redirect('my_products')
-
-
-#     form = ProductForm()
-
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'portal/product_new.html', context)

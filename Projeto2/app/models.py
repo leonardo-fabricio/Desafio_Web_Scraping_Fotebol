@@ -18,4 +18,6 @@ def Time_pre_save(signal, instance, sender, **kwargs):
 
     class Meta:
         model = Time
+
 signals.pre_save.connect(Time_pre_save, sender = Time)
+
