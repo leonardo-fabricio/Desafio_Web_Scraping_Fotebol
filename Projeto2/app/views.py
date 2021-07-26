@@ -139,7 +139,8 @@ def webscraping(request):
         sleep(5)
         #sleep(10)
         lista1 = ['1','2','3','4','5','6','7','8','9','10']
-        for y in range(13):
+        totRodadas = 14
+        for y in range(totRodadas):
             sleep(2)
             for x in lista1:
                 rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
