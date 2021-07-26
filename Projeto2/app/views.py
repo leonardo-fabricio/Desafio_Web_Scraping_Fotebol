@@ -11,6 +11,7 @@ from selenium import webdriver
 from time import sleep
 from datetime import datetime
 from selenium.webdriver.chrome.options import Options
+import os
 
 # Create your views here.
 def index(request):
@@ -81,7 +82,7 @@ def webscraping(request):
     vcon = conexao()
     def inserir(timeA,timeB,placar, rodada):
         conexao = vcon
-        sql = r"INSERT INTO jogos (timeA,timeB,placar,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str(rodada)+"')"
+        sql = r"INSERT INTO jogos (timeA,timeB,placar,Serie,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str('A')+"','"+str(rodada)+"')"
         try:
             c = conexao.cursor()
             c.execute(sql)
@@ -99,27 +100,85 @@ def webscraping(request):
         driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
         driver.get(url)
         driver.refresh()
-        sleep(10)
+        sleep(5)
+        #sleep(10)
         lista1 = ['1','2','3','4','5','6','7','8','9','10']
-
-        for x in lista1:
-            rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
-            timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
-            timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
-            placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
-            #inserir(timeA.text,timeB.text,placar.text,rodada.text)
-        driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
-        for x in range(12):
-            sleep(30)
+        for y in range(13):
+            sleep(2)
             for x in lista1:
                 rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
-                timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[1]/span[1]')
-                timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[3]/span[1]')
-                placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[2]')
-                #inserir(timeA.text,timeB.text,placar.text,rodada.text)
+                if(rodada.text == '13ª RODADA' and (x=='9' or x=='10')): # ALGUNS JOGOS NÃO ACONTECERAM, ENTÃO O X-PATH DELES MUDAM
+                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
+                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
+                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
+                elif((rodada.text == '5ª RODADA' or rodada.text == '4ª RODADA'  or rodada.text == '2ª RODADA') and x=='10'):
+                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
+                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
+                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
+                else:
+                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[1]/span[1]')
+                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[3]/span[1]')
+                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[2]')
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
             
-        driver.close()
+            # rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
+            
+            # timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[1]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[1]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[1]/div/a/div[1]/div[2]/div[2]')
+            # # sleep(1)
+            # timeA2 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[2]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB2 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[2]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar2 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[2]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA3 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[3]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB3 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[3]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar3 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[3]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA4 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[4]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB4 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[4]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar4 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[4]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA5 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[5]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB5 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[5]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar5 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[5]/div/a/div[1]/div[2]/div[2]')
+            
+            
+            # timeA6 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[6]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB6 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[6]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar6 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[6]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA7 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[7]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB7 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[7]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar7 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[7]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA8 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[8]/div/a/div[1]/div[2]/div[1]/span[1]')
+            # timeB8 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[8]/div/a/div[1]/div[2]/div[3]/span[1]')
+            # placar8 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[8]/div/a/div[1]/div[2]/div[2]')
+            
+            # timeA9 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[9]/div/div/div/div[2]/div[1]/span[1]')
+            # timeB9 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[9]/div/div/div/div[2]/div[3]/span[1]')
+            # placar9 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[9]/div/div/div/div[2]/div[2]')
+            
+            # timeA10 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[10]/div/div/div/div[2]/div[1]/span[1]')
+            # timeB10= driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[10]/div/div/div/div[2]/div[3]/span[1]')
+            # placar10 = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[10]/div/div/div/div[2]/div[2]')
+            
+            # inserir(timeA.text,timeB.text,placar.text,rodada.text)
+            # inserir(timeA2.text,timeB2.text,placar2.text,rodada.text)
+            # inserir(timeA3.text,timeB3.text,placar3.text,rodada.text)
+            # inserir(timeA4.text,timeB4.text,placar4.text,rodada.text)
+            # inserir(timeA5.text,timeB5.text,placar5.text,rodada.text)
+            # inserir(timeA6.text,timeB6.text,placar6.text,rodada.text)
+            # inserir(timeA7.text,timeB7.text,placar7.text,rodada.text)
+            # inserir(timeA8.text,timeB8.text,placar8.text,rodada.text)
+            # inserir(timeA9.text,timeB9.text,placar9.text,rodada.text)
+            # inserir(timeA10.text,timeB10.text,placar10.text,rodada.text)
+            
+        driver.quit()
         return redirect('/')
 
     scraping()
