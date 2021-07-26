@@ -15,15 +15,12 @@ input{
     margin-top: 10%;
 }
 img{
-    margin-left: 3%;
     justify-content: center !important;
-    margin-left: 42%;
     margin-bottom: 10px;
 }
 table{
-    width: 30% !important;
+    width: 40% !important;
     justify-content: center !important;
-    margin-left: 36%;
 }
 nav{
     color: white;
@@ -33,4 +30,40 @@ nav{
 }
 #delete{
     text-align: center;
+}
+#left{
+    float: left !important;
+    margin-left: 20%;
+}
+#rigth{
+    float: right !important;
+    margin-right: 20%;
+}
+#btn-remover{
+    height: 20px;
+}
+#btn-lupa{
+    margin-top: 6px;
+    padding: 3px;
+    height: 20px;
+}
+/* tabela */
+#table-center{
+    margin-left: 38%;
+}
+td 
+{
+    height: 50px; 
+    width: 50px;
+}
+
+#table-center td 
+{
+    text-align: center; 
+    vertical-align: middle;
+}
+#table-center th
+{
+    text-align: center; 
+    vertical-align: middle;
 }

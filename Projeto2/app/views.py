@@ -2,7 +2,7 @@ from os import system
 from django import forms
 from django.forms.widgets import Select
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Time
+from .models import Time, jogos
 from .forms import TimeForm, TimesModel
 from django.contrib import messages
 import sqlite3
@@ -12,6 +12,16 @@ from time import sleep
 from datetime import datetime
 from selenium.webdriver.chrome.options import Options
 import os
+
+def conexao():
+    caminho = r"C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\db.sqlite3"
+    con = None
+    try:
+        con = sqlite3.connect(caminho,check_same_thread=False)
+    except Error as ex:
+        print(ex)
+    return con
+vcon = conexao()
 
 # Create your views here.
 def index(request):
@@ -70,19 +80,28 @@ def cadastro(request):
     }
     return render(request,'cadastro.html', context)
 
+def estatisticas(request,sigla):
+    # conexao = vcon
+    # sql = r"SELECT * FROM jogos WHERE timeA = '"+str(sigla)+"' or timeB = '"+str(sigla)+"'"
+    # lista = []
+    # context = {}
+    # for p in jogos.objects.raw ('SELECT * FROM jogos WHERE timeA = "'+str(sigla)+ '" or timeB = "'+str(sigla)+ '"'):
+    #     lista.append(p)
+        
+    # for x in range(len(lista)):
+    #     context["jogo"+str(x)] = lista[x]
+    timea = jogos.objects.filter(timeA = sigla)
+    timeb = jogos.objects.filter(timeB = sigla)
+    context = {
+        'timea':timea,
+        'timeb': timeb
+    }
+    return render(request,'estatisticas.html',context)
+    
 def webscraping(request):
-    def conexao():
-        caminho = r"C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\db.sqlite3"
-        con = None
-        try:
-            con = sqlite3.connect(caminho)
-        except Error as ex:
-            print(ex)
-        return con
-    vcon = conexao()
     def inserir(timeA,timeB,placar, rodada,serie):
         conexao = vcon
-        sql = r"INSERT INTO jogos (timeA,timeB,placar,Serie,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str(serie)+"','"+str(rodada)+"')"
+        sql = r"INSERT INTO app_jogos (timeA,timeB,placar,Serie,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str(serie)+"','"+str(rodada)+"')"
         try:
             c = conexao.cursor()
             c.execute(sql)
@@ -96,18 +115,20 @@ def webscraping(request):
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('-enable-webgl')
         options.add_argument('--no-sandbox')
+
         url = "https://ge.globo.com/futebol/brasileirao-serie-a/"
         driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
         driver.get(url)
-        driver.refresh()
+        #driver.refresh()
         sleep(5)
         #sleep(10)
         lista1 = ['1','2','3','4','5','6','7','8','9','10']
-        for y in range(13):
+        totRodadas = 13
+        for y in range(totRodadas):
             sleep(2)
             for x in lista1:
                 rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
-                if(rodada.text == '13ª RODADA' and (x=='9' or x=='10')): # ALGUNS JOGOS NÃO ACONTECERAM, ENTÃO O X-PATH DELES MUDAM
+                if(rodada.text == '13ª RODADA' and x=='10'): # ALGUNS JOGOS NÃO ACONTECERAM, ENTÃO O X-PATH DELES MUDAM
                     timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
                     timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
                     placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
@@ -124,7 +145,6 @@ def webscraping(request):
                     inserir(timeA.text,timeB.text,placar.text,rodada.text,'A')
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
         driver.quit()
-        return redirect('/')
     
     def scrapingSerieB():
         
@@ -156,9 +176,8 @@ def webscraping(request):
                     inserir(timeA.text,timeB.text,placar.text,rodada.text,'B')
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
         driver.quit()
-        return redirect('/')
-
-    # scraping()
+        
+    scraping()
     scrapingSerieB()
     return render(request,'index.html')
     
