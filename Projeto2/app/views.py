@@ -80,9 +80,9 @@ def webscraping(request):
             print(ex)
         return con
     vcon = conexao()
-    def inserir(timeA,timeB,placar, rodada):
+    def inserir(timeA,timeB,placar, rodada,serie):
         conexao = vcon
-        sql = r"INSERT INTO jogos (timeA,timeB,placar,Serie,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str('A')+"','"+str(rodada)+"')"
+        sql = r"INSERT INTO jogos (timeA,timeB,placar,Serie,rodada) VALUES('"+str(timeA)+"','"+str(timeB)+"','"+str(placar)+"','"+str(serie)+"','"+str(rodada)+"')"
         try:
             c = conexao.cursor()
             c.execute(sql)
@@ -111,20 +111,58 @@ def webscraping(request):
                     timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
                     timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
                     placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
-                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
-                elif((rodada.text == '5ª RODADA' or rodada.text == '4ª RODADA'  or rodada.text == '2ª RODADA') and x=='10'):
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'A')
+                elif(((rodada.text == '5ª RODADA') or (rodada.text == '4ª RODADA')  or (rodada.text == '2ª RODADA')) and x=='10'):
                     timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
                     timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
                     placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
-                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'A')
                 else:
                     timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[1]/span[1]')
                     timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[3]/span[1]')
                     placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[2]')
-                    inserir(timeA.text,timeB.text,placar.text,rodada.text)
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'A')
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
-            
-            # rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
+        driver.quit()
+        return redirect('/')
+    
+    def scrapingSerieB():
+        
+        options = Options()
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('-enable-webgl')
+        options.add_argument('--no-sandbox')
+        url = "https://ge.globo.com/futebol/brasileirao-serie-b/"
+        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
+        driver.get(url)
+        driver.refresh()
+        sleep(5)
+        #sleep(10)
+        lista1 = ['1','2','3','4','5','6','7','8','9','10']
+        for y in range(13):
+            sleep(2)
+            for x in lista1:
+                rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
+                if(((rodada.text == '6ª RODADA') or (rodada.text == '5ª RODADA') or (rodada.text == '4ª RODADA')) and x == '10'):
+                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
+                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
+                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'B')
+                else:
+                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[1]/span[1]')
+                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[3]/span[1]')
+                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/a/div[1]/div[2]/div[2]')
+                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'B')
+            driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
+        driver.quit()
+        return redirect('/')
+
+    # scraping()
+    scrapingSerieB()
+    return render(request,'index.html')
+    
+    
+     # rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
             
             # timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[1]/div/a/div[1]/div[2]/div[1]/span[1]')
             # timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li[1]/div/a/div[1]/div[2]/div[3]/span[1]')
@@ -177,10 +215,3 @@ def webscraping(request):
             # inserir(timeA8.text,timeB8.text,placar8.text,rodada.text)
             # inserir(timeA9.text,timeB9.text,placar9.text,rodada.text)
             # inserir(timeA10.text,timeB10.text,placar10.text,rodada.text)
-            
-        driver.quit()
-        return redirect('/')
-
-    scraping()
-    return render(request,'index.html')
-    
