@@ -172,8 +172,37 @@ def webscraping(request):
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[1]').click()
         driver.quit()
         
-    scraping()
-    scrapingSerieB()
+    def atualizar(url,serie):
+        options = Options()
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('-enable-webgl')
+        options.add_argument('--no-sandbox')
+        
+        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
+        driver.get(url)
+        driver.refresh()
+        sleep(5)
+        #sleep(10)
+        lista1 = ['1','2','3','4','5','6','7','8','9','10']
+        totRodadas = 13
+        
+        driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[3]').click()
+        
+        for y in range(38-totRodadas):
+            sleep(2)
+            for x in lista1:
+                rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
+                timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
+                timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
+                placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
+                inserir(timeA.text,timeB.text,placar.text,rodada.text,serie)
+            driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[3]').click()
+        driver.quit()
+        
+    # scraping()
+    # scrapingSerieB()
+    url = "https://ge.globo.com/futebol/brasileirao-serie-a/"
+    atualizar(url,"A")
     return render(request,'index.html')
     
     
