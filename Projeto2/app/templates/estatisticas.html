@@ -19,7 +19,7 @@
         <a class="nav-link disabled" href="/">Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="cadastro">Cadastro</a>
+        <a class="nav-link disabled" href="/cadastro">Cadastro</a>
       </li>
     </ul>
   </nav>
@@ -36,14 +36,6 @@
             </Thead>
             <tbody>
                 {% for time in timea%}
-                <tr class="table-active">
-                  <td>{{time.timeA }}</td>
-                  <td>{{time.placar }}</td>
-                  <td>{{time.timeB }}</td>
-                  <td>{{time.rodada}}</td>
-                </tr>
-              {% endfor%}
-              {% for time in timeb%}
                 <tr class="table-active">
                   <td>{{time.timeA }}</td>
                   <td>{{time.placar }}</td>

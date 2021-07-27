@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
 import os
 
 def conexao():
-    caminho = r"C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\db.sqlite3"
+    caminho = r"C:\Users\leonn\OneDrive\Área de Trabalho\Desafio_Web_Scraping_Fotebol\Projeto2\db.sqlite3"
     con = None
     try:
         con = sqlite3.connect(caminho,check_same_thread=False)
@@ -90,11 +90,9 @@ def estatisticas(request,sigla):
         
     # for x in range(len(lista)):
     #     context["jogo"+str(x)] = lista[x]
-    timea = jogos.objects.filter(timeA = sigla)
-    timeb = jogos.objects.filter(timeB = sigla)
+    timea = jogos.objects.filter(timeA = sigla).exclude(timeB = sigla).order_by()
     context = {
         'timea':timea,
-        'timeb': timeb
     }
     return render(request,'estatisticas.html',context)
     
@@ -117,7 +115,7 @@ def webscraping(request):
         options.add_argument('--no-sandbox')
 
         url = "https://ge.globo.com/futebol/brasileirao-serie-a/"
-        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
+        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Desafio_Web_Scraping_Fotebol\Projeto2\app\chromedriver.exe')
         driver.get(url)
         #driver.refresh()
         sleep(5)
@@ -148,7 +146,7 @@ def webscraping(request):
         options.add_argument('-enable-webgl')
         options.add_argument('--no-sandbox')
         url = "https://ge.globo.com/futebol/brasileirao-serie-b/"
-        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
+        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Desafio_Web_Scraping_Fotebol\Projeto2\app\chromedriver.exe')
         driver.get(url)
         driver.refresh()
         sleep(5)
@@ -178,7 +176,7 @@ def webscraping(request):
         options.add_argument('-enable-webgl')
         options.add_argument('--no-sandbox')
         
-        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Documents\Django\Projeto2\app\chromedriver.exe')
+        driver = webdriver.Chrome(chrome_options= options, executable_path= r'C:\Users\leonn\OneDrive\Área de Trabalho\Desafio_Web_Scraping_Fotebol\Projeto2\app\chromedriver.exe')
         driver.get(url)
         driver.refresh()
         sleep(5)
@@ -199,10 +197,10 @@ def webscraping(request):
             driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[3]').click()
         driver.quit()
         
-    # scraping()
+    scraping()
     # scrapingSerieB()
-    url = "https://ge.globo.com/futebol/brasileirao-serie-a/"
-    atualizar(url,"A")
+    # url = "https://ge.globo.com/futebol/brasileirao-serie-a/"
+    # atualizar(url,"A")
     return render(request,'index.html')
     
     
