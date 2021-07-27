@@ -128,12 +128,7 @@ def webscraping(request):
             sleep(2)
             for x in lista1:
                 rodada = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/nav/span[2]')
-                if(rodada.text == '13ª RODADA' and x=='10'): # ALGUNS JOGOS NÃO ACONTECERAM, ENTÃO O X-PATH DELES MUDAM
-                    timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
-                    timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
-                    placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')
-                    inserir(timeA.text,timeB.text,placar.text,rodada.text,'A')
-                elif(((rodada.text == '5ª RODADA') or (rodada.text == '4ª RODADA')  or (rodada.text == '2ª RODADA')) and x=='10'):
+                if(((rodada.text == '5ª RODADA') or (rodada.text == '4ª RODADA')  or (rodada.text == '2ª RODADA')) and x=='10'):
                     timeA = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[1]/span[1]')
                     timeB = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[3]/span[1]')
                     placar = driver.find_element_by_xpath('//*[@id="classificacao__wrapper"]/section/ul/li['+x+']/div/div/div/div[2]/div[2]')

@@ -23,10 +23,13 @@ table{
     justify-content: center !important;
 }
 nav{
-    color: white;
-    background-color: black;
+    background-color: #035397 !important;
     font-size: 20px;
     text-align: center !important;
+    
+}
+a{
+    color: white !important;
 }
 #delete{
     text-align: center;

@@ -2,16 +2,27 @@
 {% load static %}
 {% csrf_token %}
 
-<html lang="en">
+<html lang="pt-br">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatisticas</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
+    <title>Estatisticas</title>
 </head>
 <body>
+  <nav>
+    <ul class="nav nav-tabs justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="cadastro">Cadastro</a>
+      </li>
+    </ul>
+  </nav>
     <h1 style="text-align: center;">Estatisticas Do Time</h1>
     <div id="table-center">
         <table class="table table-striped">
@@ -20,6 +31,7 @@
                 <th>Time 1</th>
                 <th>placar</th>
                 <th>Time 2</th>
+                <th>Rodada</th>
               </tr>
             </Thead>
             <tbody>
@@ -28,6 +40,7 @@
                   <td>{{time.timeA }}</td>
                   <td>{{time.placar }}</td>
                   <td>{{time.timeB }}</td>
+                  <td>{{time.rodada}}</td>
                 </tr>
               {% endfor%}
               {% for time in timeb%}
@@ -35,6 +48,7 @@
                   <td>{{time.timeA }}</td>
                   <td>{{time.placar }}</td>
                   <td>{{time.timeB }}</td>
+                  <td>{{time.rodada}}</td>
                 </tr>
               {% endfor%}
                 
